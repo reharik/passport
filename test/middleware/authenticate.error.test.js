@@ -27,6 +27,8 @@ describe('middleware/authenticate', function() {
         })
         .next(function(err) {
           error = err;
+        })
+        .end(function() {
           done();
         })
         .dispatch();

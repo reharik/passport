@@ -21,18 +21,12 @@ describe('middleware/authenticate', function() {
     
     var request, error, user, info;
 
-    before(function(done) {
-      function callback(e, u, i) {
-        error = e;
-        user = u;
-        info = i;
-        done();
-      }
-      
-      chai.connect.use(authenticate(passport, 'success', callback))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success', true))
         .req(function(req) {
           request = req;
         })
+        .end(function(res) {})
         .dispatch();
     });
     

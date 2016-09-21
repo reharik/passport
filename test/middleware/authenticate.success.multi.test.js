@@ -27,20 +27,19 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, ['a', 'b']))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, ['a', 'b']))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user, options) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
         })
+        .end(function(res) {})
         .dispatch();
     });
     
@@ -73,20 +72,19 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, ['a', 'b']))
+    before(async function() {
+        await chai.connect.use(authenticate(passport, ['a', 'b']))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user, options) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
         })
+        .end(function(res) {})
         .dispatch();
     });
     

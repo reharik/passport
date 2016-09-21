@@ -21,20 +21,19 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success'))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success'))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
         })
+        .end(function(res) {})
         .dispatch();
     });
     
@@ -66,26 +65,25 @@ describe('middleware/authenticate', function() {
     
     var passport = new Passport();
     passport.use('success', new Strategy());
-    passport.transformAuthInfo(function(info, done) {
+    passport.registerTransformAuthInfoFunction(function(info, done) {
       done(null, { clientId: info.clientId, client: { name: 'Foo' }, scope: info.scope });
     });
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success'))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success'))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user, options) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
         })
+        .end(function(res) {})
         .dispatch();
     });
     
@@ -118,26 +116,25 @@ describe('middleware/authenticate', function() {
     
     var passport = new Passport();
     passport.use('success', new Strategy());
-    passport.transformAuthInfo(function(info, done) {
+    passport.registerTransformAuthInfoFunction(function(info, done) {
       done(new Error('something went wrong'));
     });
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success'))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success'))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user, options) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
         })
+        .end(function(res) {})
         .dispatch();
     });
     
@@ -170,20 +167,19 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success', { authInfo: false }))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success', { authInfo: false }))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user, options) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
         })
+        .end(function(res) {})
         .dispatch();
     });
     

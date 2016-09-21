@@ -20,15 +20,15 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'pass'))
+     before(async function() {
+      await chai.connect.use(authenticate(passport, 'pass'))
         .req(function(req) {
           request = req;
         })
         .next(function(err) {
           error = err;
-          done();
         })
+        .end(function(res) {})
         .dispatch();
     });
     

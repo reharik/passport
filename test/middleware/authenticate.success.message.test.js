@@ -20,8 +20,8 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'success', { successMessage: 'Login complete',
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'success', { successMessage: 'Login complete',
                                                             successRedirect: 'http://www.example.com/account' }))
         .req(function(req) {
           request = req;
@@ -29,12 +29,10 @@ describe('middleware/authenticate', function() {
           
           req.logIn = function(user, options, done) {
             this.user = user;
-            done();
           };
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -69,8 +67,8 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'success', { successMessage: 'Login complete',
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'success', { successMessage: 'Login complete',
                                                             successRedirect: 'http://www.example.com/account' }))
         .req(function(req) {
           request = req;
@@ -79,12 +77,10 @@ describe('middleware/authenticate', function() {
           
           req.logIn = function(user, options, done) {
             this.user = user;
-            done();
           };
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -120,8 +116,8 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'success', { successMessage: true,
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'success', { successMessage: true,
                                                             successRedirect: 'http://www.example.com/account' }))
         .req(function(req) {
           request = req;
@@ -129,12 +125,10 @@ describe('middleware/authenticate', function() {
           
           req.logIn = function(user, options, done) {
             this.user = user;
-            done();
           };
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -169,8 +163,8 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'success', { successMessage: true,
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'success', { successMessage: true,
                                                             successRedirect: 'http://www.example.com/account' }))
         .req(function(req) {
           request = req;
@@ -178,12 +172,10 @@ describe('middleware/authenticate', function() {
           
           req.logIn = function(user, options, done) {
             this.user = user;
-            done();
           };
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });

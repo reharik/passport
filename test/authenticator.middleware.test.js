@@ -9,11 +9,6 @@ describe('Authenticator', function() {
   
   describe('#initialize', function() {
     
-    it('should have correct arity', function() {
-      var passport = new Authenticator();
-      expect(passport.initialize).to.have.length(1);
-    });
-    
     describe('handling a request', function() {
       var passport = new Authenticator();
       var request, error;
@@ -154,12 +149,7 @@ describe('Authenticator', function() {
   
   
   describe('#authorize', function() {
-    
-    it('should have correct arity', function() {
-      var passport = new Authenticator();
-      expect(passport.authorize).to.have.length(3);
-    });
-    
+   
     describe('handling a request', function() {
       function Strategy() {
       }
@@ -230,8 +220,8 @@ describe('Authenticator', function() {
             
             req._passport = {};
             req._passport.instance = {};
-            req._passport.instance.deserializeUser = function(user, req, done) {
-              done(null, { id: user });
+            req._passport.instance.registerDeserializeUserFunction = function(user, req) {
+              return  { id: user };
             };
             req._passport.session = {};
             req._passport.session.user = '123456';

@@ -31,7 +31,7 @@ describe('SessionStrategy', function() {
           
           req._passport = {};
           req._passport.instance = {};
-          req._passport.instance.deserializeUser = function(user, req, done) {
+          req._passport.instance.registerDeserializeUserFunction = function(user, req, done) {
             done(null, { id: user });
           };
           req._passport.session = {};
@@ -94,7 +94,7 @@ describe('SessionStrategy', function() {
           
           req._passport = {};
           req._passport.instance = {};
-          req._passport.instance.deserializeUser = function(user, req, done) {
+          req._passport.instance.registerDeserializeUserFunction = function(user, req, done) {
             done(null, false);
           };
           req._passport.session = {};

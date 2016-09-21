@@ -21,21 +21,20 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success'))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success'))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
+        }) .end(function(res) {
         })
-        .dispatch();
+        .dispatch(error);
     });
     
     it('should not error', function() {
@@ -67,19 +66,19 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success', { assignProperty: 'account' }))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success', { assignProperty: 'account' }))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user) {
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
+        })
+        .end(function(res) {
         })
         .dispatch();
     });
@@ -119,20 +118,19 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success', { scope: 'email' }))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success', { scope: 'email' }))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user, options) {
             if (options.scope != 'email') { return done(new Error('invalid options')); }
             this.user = user;
-            done();
           };
         })
         .next(function(err) {
           error = err;
-          done();
+        }) .end(function(res) {
         })
         .dispatch();
     });
@@ -167,19 +165,17 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'success', { successRedirect: 'http://www.example.com/account' }))
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'success', { successRedirect: 'http://www.example.com/account' }))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user) {
             this.user = user;
-            done();
           };
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -214,20 +210,18 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
         .req(function(req) {
           request = req;
           req.session = { returnTo: 'http://www.example.com/return' };
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user) {
             this.user = user;
-            done();
           };
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -266,19 +260,17 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'success', { successReturnToOrRedirect: 'http://www.example.com/default' }))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
+          req.logIn = function(user){
             this.user = user;
-            done();
           };
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -313,18 +305,22 @@ describe('middleware/authenticate', function() {
     
     var request, error;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'success'))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'success'))
         .req(function(req) {
           request = req;
           
-          req.logIn = function(user, options, done) {
-            done(new Error('something went wrong'));
+          req.logIn = function(user, options) {
+            throw new Error('something went wrong');
           };
         })
         .next(function(err) {
+          console.log('==========err=========');
+          console.log(err);
+          console.log('==========END err=========');
           error = err;
-          done();
+        })
+        .end(function(res) {
         })
         .dispatch();
     });

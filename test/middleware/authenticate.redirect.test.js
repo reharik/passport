@@ -20,14 +20,13 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'redirect'))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'redirect'))
         .req(function(req) {
           request = req;
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -55,14 +54,13 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use(authenticate(passport, 'redirect'))
+    before(async function() {
+      await chai.connect.use(authenticate(passport, 'redirect'))
         .req(function(req) {
           request = req;
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -90,14 +88,13 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'redirect'))
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'redirect'))
         .req(function(req) {
           request = req;
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
@@ -124,14 +121,13 @@ describe('middleware/authenticate', function() {
     
     var request, response;
 
-    before(function(done) {
-      chai.connect.use('express', authenticate(passport, 'redirect'))
+    before(async function() {
+      await chai.connect.use('express', authenticate(passport, 'redirect'))
         .req(function(req) {
           request = req;
         })
         .end(function(res) {
           response = res;
-          done();
         })
         .dispatch();
     });
