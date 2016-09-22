@@ -6,7 +6,7 @@ var chai = require('chai')
   , Passport = require('../..').Passport;
 
 
-describe('middleware/authenticate', function() {
+describe.only('middleware/authenticate', function() {
   
   describe('using strategy that specifies message', function() {
     
@@ -23,16 +23,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -40,7 +39,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -75,16 +73,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'info' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'info' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -92,7 +89,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -127,16 +123,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Login complete',
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Login complete',
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -144,7 +139,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -179,16 +173,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'OK' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'OK' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
-          
-            req.logIn = function(user, options, done) {
+
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -196,11 +189,10 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
-    
+
       it('should set user', function() {
         expect(request.user).to.be.an('object');
         expect(request.user.id).to.equal('1');
@@ -231,16 +223,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'notice', message: 'Last login was yesterday' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'notice', message: 'Last login was yesterday' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -248,7 +239,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -288,16 +278,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -305,7 +294,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -340,16 +328,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'ok' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'ok' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -357,7 +344,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -392,16 +378,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Success!',
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Success!',
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -409,7 +394,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -444,16 +428,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'Okay' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'Okay' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -461,7 +444,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -496,16 +478,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'warn', message: 'Last login from far away place' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'warn', message: 'Last login from far away place' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -513,7 +494,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -553,16 +533,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -570,7 +549,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -583,7 +561,7 @@ describe('middleware/authenticate', function() {
     
       it('should flash message', function() {
         expect(request.message.type).to.equal('success');
-        expect(request.message.msg).to.equal('Greetings');
+        expect(request.message.msg).to.equal(true);
       });
     
       it('should redirect', function() {
@@ -605,16 +583,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'info' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'info' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -622,7 +599,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -657,16 +633,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Login complete',
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Login complete',
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -674,7 +649,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -709,16 +683,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'OK' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'OK' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -726,7 +699,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -761,16 +733,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'notice', message: 'Last login was yesterday' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'notice', message: 'Last login was yesterday' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -778,7 +749,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -818,16 +788,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: true,
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -835,7 +804,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -869,16 +837,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'info' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'info' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -886,7 +853,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -920,16 +886,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Login complete',
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: 'Login complete',
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -937,7 +902,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -972,16 +936,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'OK' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { message: 'OK' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user, options) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -989,7 +952,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
@@ -1024,16 +986,15 @@ describe('middleware/authenticate', function() {
     
       var request, response;
 
-      before(function(done) {
-        chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'notice', message: 'Last login was yesterday' },
+      before(async function() {
+        await chai.connect.use('express', authenticate(passport, 'success', { successFlash: { type: 'notice', message: 'Last login was yesterday' },
                                                               successRedirect: 'http://www.example.com/account' }))
           .req(function(req) {
             request = req;
             req.session = {};
           
-            req.logIn = function(user, options, done) {
+            req.logIn = function(user) {
               this.user = user;
-              done();
             };
             req.flash = function(type, msg) {
               this.message = { type: type, msg: msg };
@@ -1041,7 +1002,6 @@ describe('middleware/authenticate', function() {
           })
           .end(function(res) {
             response = res;
-            done();
           })
           .dispatch();
       });
